@@ -1,81 +1,57 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-    <title>Generate Baseball Bat Images per Conditions</title>
-    <meta charset="utf-8" />
-    <link rel="icon" type="image/x-icon" href="./favicon.png" />
-    <link rel="stylesheet" href="https://pyscript.net/latest/pyscript.css" />
-    <script defer src="https://pyscript.net/latest/pyscript.js"></script>
-    <link rel="stylesheet" href="./assets/css/examples.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Baseball Bat Image Generator</title>
 </head>
-
 <body>
-    <nav class="navbar" style="background-color: #000000">
-        <div class="app-header">
-            <a href="">
-                <img src="./logo.png" class="logo" />
-            </a>
-            <a class="title" href="" style="color: #f0ab3c">KNN avg Generator</a>
-        </div>
-    </nav>
+    <h1>Baseball Bat Image Generator</h1>
+    
+    <!-- Form for user input -->
+    <form id="image-form">
+        <!-- Add input fields for each condition -->
+        <label for="ng">Ng:</label>
+        <input type="number" id="ng" name="ng" value="0"><br><br>
+        
+        <!-- Add more input fields for other conditions -->
+        
+        <input type="submit" value="Generate Image">
+    </form>
+    
+    <!-- Display generated image here -->
+    <div id="generated-image"></div>
 
-    <div>Type conditions here:</div>
+    <!-- JavaScript code to handle form submission -->
+    <script>
+        document.getElementById('image-form').addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent default form submission
 
-    <table>
-        <tr>
-            <td> Ng </td>
-            <td> <input type="text" style="border:3px solid #F7730E;" value="0" id="testInput1"/> </td>
-            <td> Pci </td>
-            <td> <input type="text" style="border:3px solid #F7730E;" value="175" id="testInput2"/> </td>
-            <td> H </td>
-            <td> <input type="text" style="border:3px solid #F7730E;" value="0" id="testInput3"/> </td>
-            <td> Wp </td>
-            <td> <input type="text" style="border:3px solid #F7730E;" value="0" id="testInput4"/> </td>
-            <td> Ph</td>
-            <td> <input type="text" style="border:3px solid #F7730E;" value="300" id="testInput5"/> </td>
-        </tr>
-        <tr>
-            <td> Ox </td>
-            <td> <input type="text" style="border:3px solid #F7730E;" value="24" id="testInput6"/> </td>
-            <td>Ow</td>
-            <td> <input type="text" style="border:3px solid #F7730E;" value="7" id="testInput7"/> </td>
-            <td> Hbt</td>
-            <td> <input type="text" style="border:3px solid #F7730E;" value="1459" id="testInput8"/> </td>
-            <td> Wm</td>
-            <td> <input type="text" style="border:3px solid #F7730E;" value="12" id="testInput9"/> </td>
-            <td> Wr</td>
-            <td> <input type="text" style="border:3px solid #F7730E;" value="308750" id="testInput10"/> </td>
-        </tr>
-    </table>
+            // Get user input values
+            var ng = document.getElementById('ng').value;
+            // Get values for other conditions
 
-    <button id="get-time" py-click="my_gen_function()" class="py-button">Generate</button>
+            // Create a data object with user input
+            var formData = {
+                ng: ng,
+                // Add other conditions here
+            };
 
-    <p id="current-val"></p>
-    <div id="test-output"></div>
-    <div id="pandas-output"></div>
-
-    <section class="pyscript">
-        <div id="mpl"></div>
-        <py-config>
-            packages = [
-              "matplotlib",
-              "pandas",
-            ]
-            plugins = [
-              "https://pyscript.net/latest/plugins/python/py_tutor.py"
-            ]
-        </py-config>
-
-        <script type="py">
-            import matplotlib.pyplot as plt
-            import matplotlib.tri as tri
-            import numpy as np
-            import pandas as pd
-            from pyodide.http import open_url
-            from js import console
-            from mpl_toolkits.axes_grid1 import make_axes_locatable
-            
-            # Your Python code here
-        </script>
-    </section>
+            // Send a POST request to the backend with user input data
+            fetch('/generate_image', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(formData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Display the generated image on the webpage
+                document.getElementById('generated-image').innerHTML = '<img src="' + data.image_url + '" alt="Generated Image">';
+            })
+            .catch(error => console.error('Error:', error));
+        });
+    </script>
 </body>
 </html>
