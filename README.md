@@ -1,5 +1,5 @@
 ## Generative KNN
 
-* Link: https://rcalix1.github.io/MachineLearningFoundations/DeployToWeb/GenerativeKNN/index.html
+* Link: https://connern80.github.io/MachineLearningFoundations/DeployToWeb/GenerativeKNN/index.html
 
 
